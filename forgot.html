@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Reset Password</title>
+        <link rel="stylesheet" href="loginstyle.css">
+    </head>
+
+    <style>
+       
+    </style>
+
+    <body>
+        <div class="container">
+            <h2>Reset Password</h2>
+
+            <input type="text" class="input-box" placeholder="Email" id="email">
+            <div class="forgot" onclick="goLogin()">Go back to Login</div>
+
+            <button class="btn" onclick="login()">Send Reset Link</button>
+
+        </div>
+    </body>
+
+    <script>
+
+        function login() {
+            const email = document.getElementById("email").value;
+
+            if (!email) {
+                alert("กรอก email");
+                return;
+            }
+
+            alert("ระบบ reset password ยังไม่ได้ทำ (backend ต้องเพิ่ม)");
+        }
+
+        function goLogin() {
+            window.location.href = "login.html";
+        }
+    </script>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login</title>
+        <link rel="stylesheet" href="loginstyle.css">
+    </head>
+
+    <body>
+        <div class="container">
+            <h1>Welcome!</h1>
+
+            <div class="tabs">
+                <span>Login</span> |
+                <span class="alt-tabs" onclick="goRegister()">Register</span>
+            </div>
+
+            <input type="text" class="input-box" placeholder="Username" id="username">
+            <div class="password-wrapper">
+                <input type="password" class="input-box" placeholder="Password" id="password">
+                <img src="eye-close.svg" id="eyeicon">
+            </div>
+
+            <div class="forgot" onclick="forgot()">forget password?</div>
+
+            <button class="btn" onclick="login()">Login</button>
+
+            <div class="signup" onclick="goRegister()">Don't have any account?</div>
+        </div>
+    </body>
+
+    <script>
+        let eyeicon = document.getElementById("eyeicon");
+        let password = document.getElementById("password");
+
+        eyeicon.addEventListener("click", function() {
+            if (password.type === "password") {
+                password.type = "text";
+                eyeicon.src = "eye-open.svg";
+            } else {
+                password.type = "password";
+                eyeicon.src = "eye-close.svg";
+            }
+        });
+
+        function goRegister() {
+            window.location.href = "register.html";
+        }
+
+        function forgot() {
+            window.location.href = "forgot.html";
+        }
+
+        async function login() {
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value;
+
+            if (!username || !password) {
+                alert("กรอกข้อมูลให้ครบ");
+                return;
+            }
+
+            try {
+                const res = await fetch("http://127.0.0.1:3000/api/auth/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const data = await res.json();
+
+                // 🔥 debug ช่วยตอนพัง
+                console.log("RESPONSE:", data);
+
+                if (res.ok) {
+                    alert("เข้าสู่ระบบสำเร็จ!");
+
+                    localStorage.setItem("token", data.token);
+                    /*setTimeout(() => {
+                        window.location.href = "main.html";
+                    }, 500);*/
+                } else {
+                    alert(data.error || "Login failed");
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("เชื่อม server ไม่ได้");
+            }
+        }
+    </script>
+</html>
